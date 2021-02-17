@@ -3,5 +3,5 @@
 ################################################################################################################################
 
 module "session_manager" {
-  source = "github.com/shashankreddysunkara/coda/session_manager"
+  source = "github.com/Shashankreddysunkara/coda/session_manager"
 }
