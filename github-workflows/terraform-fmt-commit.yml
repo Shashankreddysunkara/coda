@@ -1,0 +1,70 @@
+name: 'Terraform'
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init
+
+    # Checks that all Terraform configuration files adhere to a canonical format
+    - name: Terraform Format
+      run: terraform fmt
+    
+    - name: Add & Commit
+      # You may pin to the exact commit or the version.
+      # uses: EndBug/add-and-commit@b5dec7ea7647ed6edf307ec828d3aeb6bca69f63
+      uses: EndBug/add-and-commit@v5.1.0
+      with:
+        # Arguments for the git add command
+        add: '.'
+        # The name of the user that will be displayed as the author of the commit
+        author_name: 'shashank'
+        # The email of the user that will be displayed as the author of the commit
+        author_email: 'sunkaras58@gmail.com'
+        # Name of the branch to use, if different from the one that triggered the workflow
+        branch: # optional
+        # The directory where your repository is located. You should use actions/checkout first to set it up
+        cwd: # optional, default is .
+        # The message for the commit
+        message: 'ran terraform fmt'
+        # Arguments for the git rm command
+        remove: # optional
+        # Whether to use the --signoff option on git commit
+        signoff: # optional
+        # Arguments for the git tag command (the tag name always needs to be the first word not preceded by a hyphen)
+        tag: # optional  
+
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      run: terraform plan
+
+      # On push to master, build or change infrastructure according to Terraform configuration files
+      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+      run: terraform apply -auto-approve
