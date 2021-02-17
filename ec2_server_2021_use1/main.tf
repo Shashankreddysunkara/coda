@@ -56,4 +56,28 @@ resource "aws_cloudwatch_metric_alarm" "ec2_cpu" {
   dimensions = {
         InstanceId = aws_instance.example.id
       }
+
+  resource "aws_lambda_function" "rds-events" {
+    filename = "${data.archive_file.start_scheduler.output_path}"
+    function_name = "rds-events"
+    description = "Capture RDS event for lambda target"
+      event_pattern = <<pattern
+      {
+        "source": [
+          "aws.rds"
+          ],
+          "detail-type": [
+            "RDS DB Instance Event"
+          ],
+          "detail": {
+            "EventCategories": [
+              "failover"
+            ]
+          }
+
+  resource "aws_cloudwatch_event_target" "lambda" {
+    rule = "${aws_cloudwatch_event_rule.test-RDS-event.name}"
+    target_id = "populate_NLB_TG_with_RDS"
+    arn = "${aws_lambda_function.rds-events.arn}"
+  }
 }
