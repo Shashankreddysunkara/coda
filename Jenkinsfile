@@ -1,7 +1,7 @@
 node('master') {
     docker.withServer('unix:///var/run/docker.sock') {
         stage('Git clone') {
-            git 'git@github.com-application-jenkins:Shashankreddysunkara/coda.git'
+            git 'git@github.com:Shashankreddysunkara/coda.git'
         }
         stage('Build') {
             docker
@@ -17,7 +17,7 @@ node('master') {
                     sh """
                         sshpass -plol scp \
                             "${WORKSPACE}/build/*.tar.gz" \
-                            "backup@1.1.1.1:/buils";
+                            "backup@1.1.1.1:/builds";
                     """
                 }
         }
