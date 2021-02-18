@@ -1,7 +1,7 @@
 node('master') {
     docker.withServer('unix:///var/run/docker.sock') {
         stage('Git clone') {
-            git 'git@github.com-application-jenkins:shashankreddysunkara/coda.git'
+            git 'git@github.com-application-jenkins:Shashankreddysunkara/coda.git'
         }
         stage('Build') {
             docker

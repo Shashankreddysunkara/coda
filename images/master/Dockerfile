@@ -1,6 +1,6 @@
 FROM jenkins:2.32.1
 
-LABEL maintainer=”sunkaras58@gmail.com”
+LABEL maintainer=”inusasunny@gmail.com”
 
 # root user for Jenkins
 USER root
@@ -11,7 +11,7 @@ ENV JENKINS_HOME /root/jenkins
 ENV JENKINS_VERSION 2.32.1
 
 # GitHub repository to store _Jenkins_ configuration
-ENV GITHUB_USERNAME shashankreddysunkara
+ENV GITHUB_USERNAME Shashankreddysunkara
 ENV GITHUB_CONFIG_REPOSITORY coda
 
 # Make _Jenkins_ home directory
@@ -28,23 +28,24 @@ RUN echo "Asia/Kolkata" > /etc/timezone &&\
     dpkg-reconfigure --frontend noninteractive tzdata &&\
     date
 
+
 # Copy RSA keys for _Jenkins_ config repository (default keys).
 # This public key should be added to:
 # https://github.com/%YOUR_JENKINS_CONFIG_REPOSITORY%/settings/keys
-COPY ~/coda/settings/keys/jenkins.config.id_rsa     $HOME/.ssh/id_rsa
-COPY ~/coda/settings/keys/jenkins.config.id_rsa.pub $HOME/.ssh/id_rsa.pub
+COPY ./keys/jenkins.config.id_rsa     $HOME/.ssh/id_rsa
+COPY ./keys/jenkins.config.id_rsa.pub $HOME/.ssh/id_rsa.pub
 RUN chmod 600 $HOME/.ssh/id_rsa &&\
     chmod 600 $HOME/.ssh/id_rsa.pub
 RUN echo "    IdentityFile $HOME/.ssh/id_rsa" >> /etc/ssh/ssh_config &&\
     echo "    StrictHostKeyChecking no      " >> /etc/ssh/ssh_config
-RUN /bin/bash -c "eval '$(ssh-agent -s)'; ssh-add $HOME/.ssh/id_rsa;"
+RUN /bin/bash -c "eval '$(ssh-agent -s)'; echo -e " \n" | ssh-add $HOME/.ssh/id_rsa;"
 
 # Copy RSA keys for your application repository and add
 # host 'github.com-application-jenkins' for application code pulls.
 # This public key should be added to
 # https://github.com/%YOUR_APPLICATION_REPOSITORY%/settings/keys
-COPY ~/coda/settings/keys/jenkins.application.id_rsa     $HOME/.ssh/jenkins.application.id_rsa
-COPY ~/coda/settings/keys/jenkins.application.id_rsa.pub $HOME/.ssh/jenkins.application.id_rsa.pub
+COPY ./keys/jenkins.application.id_rsa     $HOME/.ssh/jenkins.application.id_rsa
+COPY ./keys/jenkins.application.id_rsa.pub $HOME/.ssh/jenkins.application.id_rsa.pub
 RUN chmod 600 $HOME/.ssh/jenkins.application.id_rsa &&\
     chmod 600 $HOME/.ssh/jenkins.application.id_rsa.pub
 RUN touch $HOME/.ssh/config &&\
@@ -56,7 +57,7 @@ RUN touch $HOME/.ssh/config &&\
 
 # Configure git
 RUN git config --global user.email "inusasunny@gmail.com" &&\
-    git config --global user.name  "shashankreddysunkara"
+    git config --global user.name  "Shashankreddysunkara"
 
 # Clone _Jenkins_ config
 RUN cd /tmp &&\
@@ -68,5 +69,6 @@ RUN cd /tmp &&\
 VOLUME $JENKINS_HOME/workspace
 
 # Run init.sh script after container start
-COPY src/init.sh /usr/local/bin/init.sh
+COPY ./sample/init.sh /usr/local/bin/init.sh
+RUN chmod 777 /usr/local/bin/init.sh
 ENTRYPOINT ["/bin/tini", "--", "/usr/local/bin/init.sh"]
