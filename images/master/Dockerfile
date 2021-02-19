@@ -181,4 +181,4 @@ VOLUME ./:$JENKINS_HOME/workspace
 
 COPY /sample/init.sh /usr/local/bin/init.sh
 
-ENTRYPOINT ["/bin/tini", "--", "/usr/local/bin/init.sh"]
+ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/init.sh"]
