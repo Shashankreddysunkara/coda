@@ -13,10 +13,11 @@ docker run \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v /root/workspace \
     jenkins-master &&\
-    sudo docker logs -f jenkins-master;
 
 if [[ "${?}" != 0 ]]; then
     exit_code=1;
 fi;
 
 exit $((exit_code));
+
+sudo docker logs -f jenkins-master;
