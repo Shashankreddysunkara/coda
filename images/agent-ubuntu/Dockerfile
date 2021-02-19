@@ -1,11 +1,11 @@
 FROM ubuntu:18.04
-LABEL maintainer=”sunkaras58@gmail.com”
+LABEL maintainer=”inusasunny@gmail.com”
 
 USER root
 
 # Set timezone
 RUN echo "Asia/Kolkata" > /etc/timezone &&\
-    dpkg-reconfigure --frontend noninteractive tzdata &&\
+    #dpkg-reconfigure --frontend noninteractive tzdata &&\
     date
 
 # Set locale

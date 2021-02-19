@@ -1,4 +1,4 @@
-FROM jenkins:2.32.1
+FROM jenkins/jenkins:2.263.4-lts-centos7
 
 LABEL maintainer=”inusasunny@gmail.com”
 
@@ -8,7 +8,7 @@ USER root
 # Environment
 ENV HOME /root
 ENV JENKINS_HOME /root/jenkins
-ENV JENKINS_VERSION 2.32.1
+ENV JENKINS_VERSION 2.263.4
 
 # GitHub repository to store _Jenkins_ configuration
 ENV GITHUB_USERNAME Shashankreddysunkara
