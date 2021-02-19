@@ -28,8 +28,6 @@ RUN echo "Asia/Kolkata" > /etc/timezone &&\
 #    dpkg-reconfigure --frontend noninteractive tzdata &&\
     date
 
-RUN timedatectl set-timezone 'Asia/Kolkata'
-
 # Copy RSA keys for _Jenkins_ config repository (default keys).
 # This public key should be added to:
 # https://github.com/%YOUR_JENKINS_CONFIG_REPOSITORY%/settings/keys
@@ -70,8 +68,8 @@ RUN cd /tmp &&\
 VOLUME ./:$JENKINS_HOME/workspace
 
 # Run init.sh script after container start
-RUN ls -lrt ./sample/
+
 RUN chmod 777 ./sample/init.sh
-COPY ./sample/init.sh /usr/local/bin/
-RUN ls -lrt ./usr/local/bin/
+COPY ./sample/init.sh /usr/local/bin/init.sh
+
 ENTRYPOINT ["/bin/init", "--", "/usr/local/bin/init.sh"]
