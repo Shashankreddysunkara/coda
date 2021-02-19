@@ -23,11 +23,12 @@ RUN /usr/local/bin/install-plugins.sh \
     workflow-aggregator:2.4 \
     docker-workflow:1.8
 
-# Set timezone
+## Set timezone
 RUN echo "Asia/Kolkata" > /etc/timezone &&\
-    dpkg-reconfigure --frontend noninteractive tzdata &&\
+#    dpkg-reconfigure --frontend noninteractive tzdata &&\
     date
 
+RUN timedatectl set-timezone 'Asia/Kolkata'
 
 # Copy RSA keys for _Jenkins_ config repository (default keys).
 # This public key should be added to:
