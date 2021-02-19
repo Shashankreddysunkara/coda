@@ -52,7 +52,7 @@ RUN touch $HOME/.ssh/config &&\
     echo "Host github.com-application-jenkins                     " >> $HOME/.ssh/config &&\
     echo "    HostName       github.com                           " >> $HOME/.ssh/config &&\
     echo "    User           git                                  " >> $HOME/.ssh/config &&\
-    echo "    IdentityFile   $HOME/.ssh/codappk" >> $HOME/.ssh/config &&\
+    echo "    IdentityFile   $HOME/.ssh/jenkins.application.id_rsa" >> $HOME/.ssh/config &&\
     echo "    IdentitiesOnly yes                                  " >> $HOME/.ssh/config
 
 # Configure git
@@ -69,6 +69,7 @@ RUN cd /tmp &&\
 VOLUME ./:$JENKINS_HOME/workspace
 
 # Run init.sh script after container start
+RUN ls -lrt ./sample/
 COPY ./sample/init.sh /usr/local/bin/init.sh
 RUN ls -lrt ./sample/
 RUN chmod 777 /usr/local/bin/init.sh
