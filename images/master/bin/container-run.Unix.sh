@@ -36,7 +36,7 @@ docker run \
     --mount source=jenkins-log,target=/var/log/jenkins \
     --mount source=jenkins-data,target=/var/jenkins_home \
     jenkins-master &&\
-    sudo docker logs -f jenkins-master;
+    docker logs -f jenkins-master;
 
 if [[ "${?}" != 0 ]]; then
     exit_code=1;
