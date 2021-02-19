@@ -118,7 +118,7 @@ USER root
 # Environment
 ENV HOME /root
 ENV JENKINS_HOME /root/jenkins
-ENV JENKINS_VERSION latest
+ENV JENKINS_VERSION 2.280
 
 # GitHub repository to store _Jenkins_ configuration
 ENV GITHUB_USERNAME Shashankreddysunkara
