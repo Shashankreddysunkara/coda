@@ -71,6 +71,6 @@ VOLUME ./:$JENKINS_HOME/workspace
 # Run init.sh script after container start
 RUN ls -lrt ./sample/
 RUN chmod 777 ./sample/init.sh
-COPY ./sample/init.sh /usr/local/bin/init.sh
+COPY ./sample/init.sh /usr/local/bin/
 RUN ls -lrt ./usr/local/bin/
 ENTRYPOINT ["/bin/init", "--", "/usr/local/bin/init.sh"]
