@@ -66,9 +66,10 @@ RUN cd /tmp &&\
     rm -r /tmp/$GITHUB_CONFIG_REPOSITORY
 
 # _Jenkins_ workspace for sharing between containers
-VOLUME $JENKINS_HOME/workspace
+VOLUME ./:$JENKINS_HOME/workspace
 
 # Run init.sh script after container start
 COPY ./sample/init.sh /usr/local/bin/init.sh
+RUN ls -lrt ./sample/
 RUN chmod 777 /usr/local/bin/init.sh
 ENTRYPOINT ["/bin/tini", "--", "/usr/local/bin/init.sh"]
