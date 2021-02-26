@@ -5,7 +5,7 @@ USER root
 
 # Set timezone
 RUN echo "Asia/Kolkata" > /etc/timezone &&\
-    #dpkg-reconfigure --frontend noninteractive tzdata &&\
+    dpkg-reconfigure --frontend noninteractive tzdata &&\
     date
 
 # Set locale
