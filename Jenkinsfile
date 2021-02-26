@@ -1,138 +1,71 @@
+//def dockerImage
+//jenkins needs entrypoint of the image to be empty
+//def runArgs = '--entrypoint \'\''
 pipeline {
     agent {
-            label 'jenkins-agent-ubuntu'
-        }
-	options {
+        label 'jenkins-agent-ubuntu'
+    }
+    options {
         buildDiscarder(logRotator(numToKeepStr: '100', artifactNumToKeepStr: '20'))
         timestamps()
     }
-//	docker.withServer('unix:///var/run/docker.sock') {
-        stages {
-            stage('Parameters'){
-			options { timeout(time: 30, unit: 'MINUTES') }
-                steps {
-                    script {
-                    properties([
-                            parameters([
-                                [$class: 'ChoiceParameter',
-                                    choiceType: 'PT_SINGLE_SELECT',
-                                    description: 'Select the Stage from the Dropdown List',
-                                    filterLength: 1,
-                                    filterable: false,
-                                    name: 'Stage',
-                                    script: [
-                                        $class: 'GroovyScript',
-                                        fallbackScript: [
-                                            classpath: [],
-                                            sandbox: false,
-                                            script:
-                                                "return['Could not get the stage']"
-                                        ],
-                                        script: [
-                                            classpath: [],
-                                            sandbox: false,
-                                            script:
-                                                "return['Build','Run','Push','Remove_Images','Remove_Containers']"
-                                        ]
-                                    ]
-                                ],
-                                [$class: 'CascadeChoiceParameter',
-                                    choiceType: 'PT_SINGLE_SELECT',
-                                    description: 'Select the Parameter from the Dropdown List',
-                                    name: 'Docker',
-                                    referencedParameters: 'Stage',
-                                    script:
-                                        [$class: 'GroovyScript',
-                                        fallbackScript: [
-                                                classpath: [],
-                                                sandbox: false,
-                                                script: "return['Could not get Parameter from Stage Param']"
-                                                ],
-                                        script: [
-                                                classpath: [],
-                                                sandbox: false,
-                                                script: '''
-                                                if (Stage.equals("Build")){
-                                                    return["master", "agent-ubuntu"]
-                                                }
-                                                else if(Stage.equals("Run")){
-                                                    return["master", "agent-ubuntu"]
-                                                }
-                                                else if(Stage.equals("Remove_Images")){
-                                                    return["master", "agent-ubuntu"]
-                                                }
-												else if(Stage.equals("Remove_Containers")){
-                                                    return["master", "agent-ubuntu"]
-                                                }
-                                                '''
-                                            ]
-                                    ]
-                                ],
-                                [$class: 'DynamicReferenceParameter',
-                                    choiceType: 'ET_ORDERED_LIST',
-                                    description: 'Select the  AMI based on the following infomration',
-                                    name: 'Execute',
-                                    referencedParameters: 'Env',
-                                    script:
-                                         [$class: 'GroovyScript',
-                                          fallbackScript: [
-                                                  classpath: [],
-                                                  sandbox: false,
-                                                  script: "return['Could not get Parameter from Execute Param']"
-                                          ],
-                                          script: [
-                                                classpath: [],
-                                                sandbox: false,
-                                                script: '''
-                                                    if (Stage.equals("Build")) && (Docker.equals("master")){
-                                                    echo -e 'Building jenkins-agent-ubuntu \n\n'
-													sh "bash /home/sunny/yada/images/master/bin/image-build.Unix.sh"
-													return[master:image-build.Unix.sh]
-												}
-												else if (Stage.equals("Build")) && (Docker.equals("agent-ubuntu")){
-													echo -e 'Building jenkins-agent-ubuntu \n\n'
-					                                sh "bash /home/sunny/yada/images/agent-ubuntu/bin/image-build.sh"
-													return[agent-ubuntu:image-build.sh]
-                                                }
-                                                else if (Stage.equals("Run")) && (Docker.equals("master")){
-                                                    echo -e 'Run jenkins-master \n\n'
-					                                sh "bash /home/sunny/yada/images/master/bin/container-run.Unix.sh"
-													return[master:container-run.Unix.sh]
-												}
-												else if (Stage.equals("Run")) && (Docker.equals("agent-ubuntu")){
-				                                    echo -e 'Run jenkins-agent-ubuntu \n\n'
-					                                sh "bash /home/sunny/yada/images/agent-ubuntu/bin/container-run.sh"
-													return[agent-ubuntu:container-run.sh]
-                                                }
-                                                else if (Stage.equals("Remove_Images")) && (Docker.equals("master")){
-                                                    echo -e 'Remove jenkins-master image \n\n'
-					                                sh "bash /home/sunny/yada/images/master/bin/image-remove.sh"
-													return[master:image-remove.sh]
-												}
-												else if (Stage.equals("Remove_Images")) && (Docker.equals("agent-ubuntu")){
-				                                    echo -e 'Remove jenkins-agent-ubuntu image \n\n'
-					                                sh "bash /home/sunny/yada/images/agent-ubuntu/bin/image-remove.sh"
-													return[agent-ubuntu:image-remove.sh]
-                                                }
-												else if (Stage.equals("Remove_Containers")) && (Docker.equals("master")){
-                                                    echo -e 'Remove jenkins-master Container \n\n'
-					                                sh "bash /home/sunny/yada/images/master/bin/container-stop.sh"
-													return[master:container-stop.sh]
-												}
-												else if (Stage.equals("Remove_Containers")) && (Docker.equals("agent-ubuntu")){
-													echo -e 'Remove jenkins-agent-ubuntu Container \n\n'
-					                                sh "bash /home/sunny/yada/images/agent-ubuntu/bin/container-stop.sh"
-													return[agent-ubuntu:container-stop.sh]
-                                                }
-                                                    '''
-                                                ]
-                                        ]
-                                ]
-                            ])
-                        ])
-                    }
+	docker.withServer('unix:///var/run/docker.sock') {
+    stages {
+        stage('Build') {
+            options { timeout(time: 30, unit: 'MINUTES') }
+            steps {
+                script {
+//                    def commit = checkout scm
+                    // we set BRANCH_NAME to make when { branch } syntax work without multibranch job
+//                    env.BRANCH_NAME = commit.GIT_BRANCH.replace('origin/', '')
+                    echo 'Building jenkins-master'
+					sh "bash /home/sunny/yada/images/master/bin/image-build.Unix.sh"
+//                    dockerImage = docker.build("jenkins-master:${env.BUILD_ID}",
+//                        "--label \"GIT_COMMIT=${env.GIT_COMMIT}\""
+//                        + " --build-arg MY_ARG=myArg"
+//   					  + "-f /home/sunny/yada/images/master/Dockerfile"
+//                        + " ~/yada/."
+//                    )
+                }
+				script {
+				echo 'Building jenkins-agent-ubuntu'
+					sh "bash /home/sunny/yada/images/agent-ubuntu/bin/image-build.sh"
+//                    dockerImage = docker.build("jenkins-agent-ubuntu:${env.BUILD_ID}",
+//                        "--label \"GIT_COMMIT=${env.GIT_COMMIT}\""
+//                        + " --build-arg MY_ARG=myArg"
+//   					  + "-f /home/sunny/yada/images/agent-ubuntu/Dockerfile"
+//                        + " ~/yada/."
+//                    )
                 }
             }
         }
-//     }
+		stage('Run Containers') {
+            options { timeout(time: 30, unit: 'MINUTES') }
+            steps {
+                script {
+                    echo 'Run jenkins-master'
+					sh "bash /home/sunny/yada/images/master/bin/container-run.Unix.sh"
+                }
+				script {
+				echo 'Run jenkins-agent-ubuntu'
+					sh "bash /home/sunny/yada/images/agent-ubuntu/bin/container-run.sh"
+                }
+            }
+        }
+//        stage('Push to docker repository') {
+//            when { branch 'master' }
+//           options { timeout(time: 5, unit: 'MINUTES') }
+//            steps {
+//                lock("${JOB_NAME}-Push") {
+//                    script {
+//                        docker.withRegistry('https://myrepo:5000', 'docker_registry') {
+//                            dockerImage.push('latest')
+//                        }
+//                    }
+//                    milestone 30
+//               }
+//           }
+//        }
+    }
+  }
 }

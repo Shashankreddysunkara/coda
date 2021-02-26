@@ -1,6 +1,6 @@
 job('DSL-job-1') {
 //    agent {
-//            label 'jenkins-agent-ubuntu'
+            label( 'jenkins-agent-ubuntu' )
 //        }
 //	options {
 //        buildDiscarder(logRotator(numToKeepStr: '100', artifactNumToKeepStr: '20'))
