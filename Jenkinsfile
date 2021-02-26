@@ -19,7 +19,7 @@ pipeline {
                     // we set BRANCH_NAME to make when { branch } syntax work without multibranch job
 //                    env.BRANCH_NAME = commit.GIT_BRANCH.replace('origin/', '')
                     echo 'Building jenkins-master'
-					sh "bash /home/sunny/yada/images/master/bin/image-build.Unix.sh"
+					sh "bash /home/ubuntu/sunny/workspace/$JOB_NAME/images/master/bin/image-build.Unix.sh"
 //                    dockerImage = docker.build("jenkins-master:${env.BUILD_ID}",
 //                        "--label \"GIT_COMMIT=${env.GIT_COMMIT}\""
 //                        + " --build-arg MY_ARG=myArg"
@@ -29,7 +29,7 @@ pipeline {
                 }
 				script {
 				echo 'Building jenkins-agent-ubuntu'
-					sh "bash /home/sunny/yada/images/agent-ubuntu/bin/image-build.sh"
+					sh "bash /home/ubuntu/sunny/workspace/$JOB_NAME/images/agent-ubuntu/bin/image-build.sh"
 //                    dockerImage = docker.build("jenkins-agent-ubuntu:${env.BUILD_ID}",
 //                        "--label \"GIT_COMMIT=${env.GIT_COMMIT}\""
 //                        + " --build-arg MY_ARG=myArg"
@@ -44,11 +44,11 @@ pipeline {
             steps {
                 script {
                     echo 'Run jenkins-master'
-					sh "bash /home/sunny/yada/images/master/bin/container-run.Unix.sh"
+					sh "bash /home/ubuntu/sunny/workspace/$JOB_NAME/images/master/bin/container-run.Unix.sh"
                 }
 				script {
 				echo 'Run jenkins-agent-ubuntu'
-					sh "bash /home/sunny/yada/images/agent-ubuntu/bin/container-run.sh"
+					sh "bash /home/ubuntu/sunny/workspace/$JOB_NAME/images/agent-ubuntu/bin/container-run.sh"
                 }
             }
         }
