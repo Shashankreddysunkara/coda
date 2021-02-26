@@ -84,7 +84,7 @@ RUN cd /tmp &&\
     rm -r /tmp/$GITHUB_CONFIG_REPOSITORY
 
 # _Jenkins_ workspace for sharing between containers
-VOLUME /home/ubuntu/sunny/sunny_jenkins_container_volume:$JENKINS_HOME
+VOLUME /home/ubuntu/sunny/sunny_jenkins_master_container_home_volume:$JENKINS_HOME
 
 # Run init.sh script after container start
 
