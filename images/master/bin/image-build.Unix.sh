@@ -11,7 +11,7 @@ mkdir -p /home/ubuntu/sunny/sunny_jenkins_log_volume;
 #    cp ~/coda/images/master/src/init.sh ./sample &&\
 #    docker build --no-cache -t jenkins-master -f ~/coda/images/master/Dockerfile ~/coda/.;
 
-cp /home/ubuntu/sunny/workspace/$JOB_NAME/settings/keys/jenkins.* ./keys &&\
+cp /home/ubuntu/.ssh/jenkins.* ./keys &&\
 cp /home/ubuntu/sunny/workspace/$JOB_NAME/images/master/src/init.sh ./sample &&\
 
 #docker build --no-cache -t jenkins-master -f /home/ubuntu/sunny/workspace/$JOB_NAME/images/master/Dockerfile ~/coda/.;
