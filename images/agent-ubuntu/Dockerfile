@@ -1,5 +1,5 @@
 FROM ubuntu:18.04
-LABEL maintainer=”inusasunny@gmail.com”
+LABEL maintainer=inusasunny@gmail.com
 
 USER root
 
