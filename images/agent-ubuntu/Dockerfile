@@ -8,7 +8,7 @@ ENV TZ=Asia/Kolkata
 
 # Set timezone
 RUN echo "Asia/Kolkata" > /etc/timezone &&\
-    apt-get update -y && apt-get install -y tzdata &&\
+    apt-get update -y && apt-get install -y tzdata locales &&\
     dpkg-reconfigure --frontend noninteractive tzdata &&\
     date
 
