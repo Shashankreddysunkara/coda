@@ -2,8 +2,8 @@
 
 exit_code=0;
 
-mkdir -p /home/ubuntu/sunny/workspace/$JOB_NAME/keys;
-mkdir -p /home/ubuntu/sunny/workspace/$JOB_NAME/sample;
+mkdir -p keys;
+mkdir -p sample;
 mkdir -p /home/ubuntu/sunny/sunny_jenkins_master_container_home_volume;
 mkdir -p /home/ubuntu/sunny/sunny_jenkins_log_volume;
 
@@ -11,10 +11,9 @@ mkdir -p /home/ubuntu/sunny/sunny_jenkins_log_volume;
 #    cp ~/coda/images/master/src/init.sh ./sample &&\
 #    docker build --no-cache -t jenkins-master -f ~/coda/images/master/Dockerfile ~/coda/.;
 
-cp /home/ubuntu/.ssh/jenkins.* /home/ubuntu/sunny/workspace/$JOB_NAME/keys &&\
-cp /home/ubuntu/sunny/workspace/$JOB_NAME/images/master/src/init.sh /home/ubuntu/sunny/workspace/$JOB_NAME/sample &&\
-
-#docker build --no-cache -t jenkins-master -f /home/ubuntu/sunny/workspace/$JOB_NAME/images/master/Dockerfile ~/coda/.;
+sudo cp /home/ubuntu/.ssh/jenkins.* ./keys &&\
+sudo cp /home/ubuntu/sunny/workspace/$JOB_NAME/images/master/src/init.sh ./sample &&\
+sudo chmod 777 ./sample/init.sh
 sudo docker build --no-cache -t jenkins-master -f /home/ubuntu/sunny/workspace/$JOB_NAME/images/master/Dockerfile .;
 if [[ "${?}" != 0 ]]; then
     exit_code=1;
