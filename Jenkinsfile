@@ -1,5 +1,7 @@
 pipeline {
-    agent jenkins-agent-ubuntu
+    agent {
+            label 'jenkins-agent-ubuntu'
+        }
 	options {
         buildDiscarder(logRotator(numToKeepStr: '100', artifactNumToKeepStr: '20'))
         timestamps()
