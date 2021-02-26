@@ -22,9 +22,9 @@
 
 exit_code=0;
 
-docker volume create jenkins-data
-docker volume create jenkins-log
-docker volume ls
+#docker volume create jenkins-data
+#docker volume create jenkins-log
+#docker volume ls
 docker run \
     -d \
     --name jenkins-master \
@@ -32,11 +32,11 @@ docker run \
     -p 50000:50000 \
     -v $(which docker):/usr/bin/docker \
     -v /var/run/docker.sock:/var/run/docker.sock \
-    -v /root:/root/workspace \
-    --mount source=jenkins-log,target=/var/log/jenkins \
-    --mount source=jenkins-data,target=/var/jenkins_home \
+#    -v /root/sunny_jenkins:/root/jenkins \
+    -v /root/sunny_jenkins:/var/log/jenkins \
+#    --mount source=jenkins-log,target=/var/log/jenkins \
+#    --mount source=jenkins-data,target=/root/jenkins/workspace \
     jenkins-master &&\
-    docker logs -f jenkins-master;
 
 if [[ "${?}" != 0 ]]; then
     exit_code=1;
