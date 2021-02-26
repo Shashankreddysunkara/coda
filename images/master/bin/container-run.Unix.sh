@@ -25,7 +25,7 @@ exit_code=0;
 #docker volume create jenkins-data
 #docker volume create jenkins-log
 #docker volume ls
-docker run \
+sudo docker run \
     -d \
     --name jenkins-master \
     -p 8080:8080 \
