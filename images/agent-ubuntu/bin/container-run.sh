@@ -2,7 +2,7 @@
 
 exit_code=0;
 
-docker volume ls
+sudo docker volume ls
 
 sudo docker run \
     -d \
@@ -24,7 +24,6 @@ sudo docker run \
 
 #    --name jenkins-agent-ubuntu \
 #    jenkins-agent-ubuntu &&\
-    sudo docker logs -f jenkins-agent-ubuntu;
 
 if [[ "${?}" != 0 ]]; then
     exit_code=1;
