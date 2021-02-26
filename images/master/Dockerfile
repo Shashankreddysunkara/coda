@@ -24,8 +24,8 @@ ENV JENKINS_OPTS="--handlerCountMax=300 --logfile=/var/log/jenkins/jenkins.log -
 USER root
 
 # Environment
-ENV HOME /root
-ENV JENKINS_HOME /root/jenkins
+ENV HOME /home/ubuntu/
+ENV JENKINS_HOME /home/ubuntu/sunny/jenkins
 ENV JENKINS_VERSION 2.280
 
 # GitHub repository to store _Jenkins_ configuration
@@ -79,12 +79,12 @@ RUN git config --global user.email "inusasunny@gmail.com" &&\
 # Clone _Jenkins_ config
 RUN cd /tmp &&\
     git clone git@github.com:$GITHUB_USERNAME/$GITHUB_CONFIG_REPOSITORY.git &&\
-    mkdir -p /root/workspace/$GITHUB_CONFIG_REPOSITORY
-    cp -r $GITHUB_CONFIG_REPOSITORY/. /root/workspace/$GITHUB_CONFIG_REPOSITORY &&\
+    mkdir -p /home/ubuntu/sunny/workspace/$GITHUB_CONFIG_REPOSITORY
+    cp -r $GITHUB_CONFIG_REPOSITORY/. /home/ubuntu/sunny/workspace/$GITHUB_CONFIG_REPOSITORY &&\
     rm -r /tmp/$GITHUB_CONFIG_REPOSITORY
 
 # _Jenkins_ workspace for sharing between containers
-VOLUME ./sunny_jenkins:$JENKINS_HOME
+VOLUME /home/ubuntu/sunny/sunny_jenkins_container_volume:$JENKINS_HOME
 
 # Run init.sh script after container start
 

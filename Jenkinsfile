@@ -1,10 +1,10 @@
 pipeline {
-    agent any
+    agent jenkins-agent-ubuntu
 	options {
         buildDiscarder(logRotator(numToKeepStr: '100', artifactNumToKeepStr: '20'))
         timestamps()
     }
-	docker.withServer('unix:///var/run/docker.sock') {
+//	docker.withServer('unix:///var/run/docker.sock') {
         stages {
             stage('Parameters'){
 			options { timeout(time: 30, unit: 'MINUTES') }
@@ -132,5 +132,5 @@ pipeline {
                 }
             }
         }
-     }
+//     }
 }
