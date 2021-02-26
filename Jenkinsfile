@@ -9,7 +9,7 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '100', artifactNumToKeepStr: '20'))
         timestamps()
     }
-	docker.withServer('unix:///var/run/docker.sock') {
+//	docker.withServer('unix:///var/run/docker.sock') {
     stages {
         stage('Build') {
             options { timeout(time: 30, unit: 'MINUTES') }
@@ -67,5 +67,5 @@ pipeline {
 //           }
 //        }
     }
-  }
+//  }
 }
