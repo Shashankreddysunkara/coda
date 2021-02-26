@@ -32,7 +32,7 @@ sudo docker run \
     -p 50000:50000 \
     -v $(which docker):/usr/bin/docker \
     -v /var/run/docker.sock:/var/run/docker.sock \
-    -v /home/ubuntu/sunny/sunny_jenkins_log_volume:/var/log/jenkins \
+    -v /home/ubuntu/sunny/sunny_jenkins_master_log_volume:/var/log/jenkins \
     jenkins-master &&\
 
 #    -v /root/sunny_jenkins:/root/jenkins \

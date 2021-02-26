@@ -5,7 +5,7 @@ exit_code=0;
 mkdir -p keys;
 mkdir -p sample;
 mkdir -p /home/ubuntu/sunny/sunny_jenkins_master_container_home_volume;
-mkdir -p /home/ubuntu/sunny/sunny_jenkins_log_volume;
+mkdir -p /home/ubuntu/sunny/sunny_jenkins_master_log_volume;
 
 #cp ~/coda/settings/keys/jenkins.* ./keys &&\
 #    cp ~/coda/images/master/src/init.sh ./sample &&\
