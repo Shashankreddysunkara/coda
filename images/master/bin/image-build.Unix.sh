@@ -19,7 +19,7 @@ if [[ "${?}" != 0 ]]; then
     exit_code=1;
 fi;
 
-#rm -r /home/ubuntu/sunny/workspace/$JOB_NAME/keys;
-#rm -r /home/ubuntu/sunny/workspace/$JOB_NAME/sample;
+rm -r ./keys;
+rm -r ./sample;
 
 exit $((exit_code));
